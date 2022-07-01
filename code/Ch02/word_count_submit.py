@@ -1,14 +1,18 @@
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 
-
 spark = SparkSession.builder.appName(
-    "Counting word occurences from a book."
+    "Counting word occurrences from a book."
 ).getOrCreate()
 
-spark.sparkContext.setLogLevel("WARN")
+spark.sparkContext.setLogLevel("DEBUG")
 
 # If you need to read multiple text files, replace `1342-0` by `*`.
+df = spark.read.text("../../data/gutenberg_books/1342-0.txt")
+
+df
+# df.take(5)
+
 results = (
     spark.read.text("../../data/gutenberg_books/1342-0.txt")
     .select(F.split(F.col("value"), " ").alias("line"))
